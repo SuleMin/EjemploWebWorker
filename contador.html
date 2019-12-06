@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Contador de Numeros: <output id="result"></output></p>
+<button onclick="startWorker()">Start Worker</button>
+<button onclick="stopWorker()">Stop Worker</button>
+
+<script>
+var w;
+
+function startWorker() {
+  if (typeof(Worker) !== "undefined") { //Las siguientes líneas verifican si el trabajador ya existe, si no, crea un nuevo objeto de trabajador web y ejecuta el código en "demo_workers.js":
+    if (typeof(w) == "undefined") {
+      w = new Worker("demo_workers.js");
+    }//Luego podemos enviar y recibir mensajes del trabajador web.//Agregue un oyente de eventos "onmessage" al trabajador web.
+    w.onmessage = function(event) {
+      document.getElementById("result").innerHTML = event.data;
+    };
+  } else {
+    document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
+  }
+}
+    
+    //Cuando el trabajador web publica un mensaje, se ejecuta el código dentro del detector de eventos. Los datos del trabajador web se almacenan en event.data.
+
+
+
+function stopWorker() {
+  w.terminate();
+  w = undefined;
+}//para despedir a un trabajador web y liberar recursos del navegador / computadora, use el metodo terminate
+    //Si configura la variable de trabajo como indefinida, después de que se haya terminado, puede reutilizar el código:
+</script>
+
+</body>
+</html>
